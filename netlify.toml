@@ -7,9 +7,4 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Redirects for Next.js
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/next"
-  status = 200
+  inputs = {}
