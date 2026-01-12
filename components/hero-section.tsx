@@ -14,7 +14,7 @@ export function HeroSection() {
   const hero = siteConfig.hero
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -32,8 +32,8 @@ export function HeroSection() {
       <div className="absolute top-20 right-10 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
       <div className="absolute bottom-20 left-10 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
 
-      <div className="container relative z-10 mx-auto px-4 py-20">
-        <div className="max-w-2xl">
+      <div className="container relative z-10 mx-auto px-4 py-20 flex items-center min-h-screen">
+        <div className="max-w-2xl w-full">
           {hero.badge.show && (
             <motion.div
               initial={fadeInUp.hidden}
@@ -63,7 +63,7 @@ export function HeroSection() {
             initial={fadeInUp.hidden}
             animate={fadeInUp.visible}
             transition={{ ...transitions.default, delay: 0.2 }}
-            className="mb-8 text-lg text-muted-foreground sm:text-xl max-w-xl"
+            className="mb-8 text-lg text-muted-foreground sm:text-xl max-w-xl leading-relaxed"
           >
             {hero.description}
           </motion.p>
