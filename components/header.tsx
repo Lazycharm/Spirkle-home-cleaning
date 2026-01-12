@@ -87,25 +87,61 @@ export function Header() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] glass-strong">
-              <nav className="mt-8 flex flex-col gap-4">
-                {siteConfig.navLinks.map((link) => (
-                  <Link
+            <SheetContent 
+              side="right" 
+              className="w-[85vw] max-w-[320px] sm:w-[320px] bg-background/95 backdrop-blur-xl border-l border-border/50 p-0 flex flex-col"
+            >
+              {/* Header Section */}
+              <div className="flex items-center justify-between p-6 border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30">
+                    <Sparkles className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <span className="text-lg font-bold text-foreground">{siteConfig.businessName}</span>
+                </div>
+              </div>
+
+              {/* Navigation Links */}
+              <nav className="flex-1 px-6 py-6 flex flex-col gap-1 overflow-y-auto">
+                {siteConfig.navLinks.map((link, index) => (
+                  <motion.div
                     key={link.href}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-lg font-medium text-foreground transition-colors hover:text-primary py-2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                   >
-                    {link.label}
-                  </Link>
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center px-4 py-3.5 rounded-lg text-base font-medium text-foreground transition-all hover:bg-primary/10 hover:text-primary active:bg-primary/20 group"
+                    >
+                      <span className="relative">
+                        {link.label}
+                        <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full" />
+                      </span>
+                    </Link>
+                  </motion.div>
                 ))}
-                <Button asChild className="mt-4 shadow-lg shadow-primary/25">
-                  <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="mr-2 h-4 w-4" />
+              </nav>
+
+              {/* WhatsApp Button */}
+              <div className="p-6 pt-4 border-t border-border/50">
+                <Button 
+                  asChild 
+                  className="w-full h-12 text-base font-semibold shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all"
+                  size="lg"
+                >
+                  <a 
+                    href={getWhatsAppLink()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <MessageCircle className="mr-2 h-5 w-5" />
                     Book via WhatsApp
                   </a>
                 </Button>
-              </nav>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
