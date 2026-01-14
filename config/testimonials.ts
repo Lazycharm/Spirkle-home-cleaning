@@ -24,7 +24,7 @@ export const testimonialsConfig: Testimonial[] = [
     name: "Mohammed R.",
     location: "City Tower, Floor 8",
     avatar: "professional-man-portrait-smiling-arab-businessman.jpg",
-    text: "As a busy professional, having a reliable cleaning service is essential. Sparkle Clean never disappoints.",
+    text: "As a busy professional, having a reliable cleaning service is essential. Bloom & Broom never disappoints.",
   },
   {
     id: "3",

@@ -5,7 +5,7 @@
 
 export const siteConfig = {
   // Business Information
-  businessName: "Sparkle Clean",
+  businessName: "Bloom & Broom",
   tagline: "Your trusted, family-run apartment cleaning service",
   location: {
     city: "Ajman",
@@ -42,7 +42,7 @@ export const siteConfig = {
 
   // SEO & Meta
   seo: {
-    title: "Sparkle Clean Ajman | Trusted Apartment Cleaning in City Tower",
+    title: "Bloom & Broom Ajman | Trusted Apartment Cleaning in City Tower",
     description:
       "Professional, family-run apartment cleaning service in City Tower, Ajman. Reliable, female-friendly, and satisfaction guaranteed. Book via WhatsApp today!",
   },

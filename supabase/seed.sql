@@ -36,7 +36,7 @@ ON CONFLICT (id) DO NOTHING;
 -- Insert default testimonials
 INSERT INTO testimonials (id, name, location, avatar, text, order_index) VALUES
   ('00000000-0000-0000-0000-000000000001', 'Amina K.', 'City Tower, Floor 12', 'professional-woman-portrait-smiling-arab.jpg', 'They treat my home like their own. So professional and thorough every single time. Highly recommend!', 0),
-  ('00000000-0000-0000-0000-000000000002', 'Mohammed R.', 'City Tower, Floor 8', 'professional-man-portrait-smiling-arab-businessman.jpg', 'As a busy professional, having a reliable cleaning service is essential. Sparkle Clean never disappoints.', 1),
+  ('00000000-0000-0000-0000-000000000002', 'Mohammed R.', 'City Tower, Floor 8', 'professional-man-portrait-smiling-arab-businessman.jpg', 'As a busy professional, having a reliable cleaning service is essential. Bloom & Broom never disappoints.', 1),
   ('00000000-0000-0000-0000-000000000003', 'Fatima A.', 'Nearby Building', 'professional-woman-portrait-hijab-smiling-friendly.jpg', 'I love that I can request a female cleaner. They''re always on time and my apartment looks amazing after.', 2)
 ON CONFLICT (id) DO NOTHING;
 
@@ -60,7 +60,7 @@ ON CONFLICT (id) DO NOTHING;
 -- Insert default site config
 INSERT INTO site_config (key, value) VALUES
   ('site', '{
-    "businessName": "Sparkle Clean",
+    "businessName": "Bloom & Broom",
     "tagline": "Your trusted, family-run apartment cleaning service",
     "location": {
       "city": "Ajman",
@@ -87,7 +87,7 @@ INSERT INTO site_config (key, value) VALUES
       }
     },
     "seo": {
-      "title": "Sparkle Clean Ajman | Trusted Apartment Cleaning in City Tower",
+      "title": "Bloom & Broom Ajman | Trusted Apartment Cleaning in City Tower",
       "description": "Professional, family-run apartment cleaning service in City Tower, Ajman. Reliable, female-friendly, and satisfaction guaranteed. Book via WhatsApp today!"
     }
   }'::jsonb),

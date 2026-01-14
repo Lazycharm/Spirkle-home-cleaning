@@ -1,4 +1,4 @@
-# Sparkle Clean - Home Cleaning Service Website
+# Bloom & Broom - Home Cleaning Service Website
 
 A modern, responsive Next.js website for a home cleaning service business with a fully integrated admin dashboard powered by Supabase.
 
