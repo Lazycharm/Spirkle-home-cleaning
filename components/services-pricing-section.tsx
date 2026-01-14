@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Check, MessageCircle, Clock, Sparkles } from "lucide-react"
@@ -11,8 +12,33 @@ import { addonsConfig } from "@/config/addons"
 import { imagesConfig, getImagePath } from "@/config/images"
 import { getWhatsAppLink } from "@/lib/whatsapp"
 import { fadeInUp } from "@/lib/animations"
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function ServicesPricingSection() {
+  const [services, setServices] = useState(servicesConfig)
+  const [pricing, setPricing] = useState(pricingPlansConfig)
+  const [addons, setAddons] = useState(addonsConfig)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [fetchedServices, fetchedPricing, fetchedAddons] = await Promise.all([
+          dataFetcher.getServices(),
+          dataFetcher.getPricing(),
+          dataFetcher.getAddons(),
+        ])
+        setServices(fetchedServices)
+        setPricing(fetchedPricing)
+        setAddons(fetchedAddons)
+      } catch (error) {
+        console.error("Failed to load services/pricing/addons:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadData()
+  }, [])
   return (
     <section id="services" className="relative px-4 py-16 md:py-20">
       <div className="container mx-auto">
@@ -31,7 +57,7 @@ export function ServicesPricingSection() {
 
         {/* Services Grid - Compact */}
         <div className="grid gap-6 md:grid-cols-3 mb-16">
-          {servicesConfig.map((service, index) => (
+          {services.map((service, index) => (
             <motion.div
               key={service.id}
               initial={fadeInUp.hidden}
@@ -138,7 +164,7 @@ export function ServicesPricingSection() {
             Add Extra Services
           </h3>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 max-w-4xl mx-auto">
-            {addonsConfig.map((addon, index) => {
+            {addons.map((addon, index) => {
               const Icon = addon.icon
               return (
                 <motion.div

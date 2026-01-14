@@ -1,9 +1,11 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Users, Heart, Shield, Clock } from "lucide-react"
 import { motion } from "framer-motion"
 import { siteConfig } from "@/config/site"
 import { fadeInUp } from "@/lib/animations"
+import { dataFetcher } from "@/lib/data-fetcher"
 
 const iconMap: Record<string, typeof Users> = {
   "Local Residents": Users,
@@ -13,11 +15,24 @@ const iconMap: Record<string, typeof Users> = {
 }
 
 export function SocialProofStrip() {
+  const [config, setConfig] = useState(siteConfig)
+
+  useEffect(() => {
+    async function loadConfig() {
+      try {
+        const fetchedConfig = await dataFetcher.getSiteConfig()
+        setConfig(fetchedConfig)
+      } catch (error) {
+        console.error("Failed to load site config:", error)
+      }
+    }
+    loadConfig()
+  }, [])
   return (
     <section className="relative bg-primary/5 border-y border-primary/10">
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
-          {siteConfig.socialProof.map((item, index) => {
+          {config.socialProof.map((item, index) => {
             const Icon = iconMap[item.label] || Users
             return (
               <motion.div

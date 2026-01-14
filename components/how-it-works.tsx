@@ -1,10 +1,25 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { stepsConfig, howItWorksSectionConfig } from "@/config/how-it-works"
 import { fadeInUp, scaleIn } from "@/lib/animations"
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function HowItWorks() {
+  const [steps, setSteps] = useState(stepsConfig)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const fetchedSteps = await dataFetcher.getHowItWorks()
+        setSteps(fetchedSteps)
+      } catch (error) {
+        console.error("Failed to load how-it-works:", error)
+      }
+    }
+    loadData()
+  }, [])
   return (
     <section id="how-it-works" className="relative px-4 py-20 md:py-28 overflow-hidden">
       {/* Gradient Background */}
@@ -27,7 +42,7 @@ export function HowItWorks() {
         </motion.div>
 
         <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
-          {stepsConfig.map((step, index) => {
+          {steps.map((step, index) => {
             const Icon = step.icon
             return (
               <motion.div
@@ -39,7 +54,7 @@ export function HowItWorks() {
                 className="relative flex flex-col items-center text-center"
               >
                 {/* Connector line */}
-                {index < stepsConfig.length - 1 && (
+                {index < steps.length - 1 && (
                   <div className="absolute left-[calc(50%+50px)] top-12 hidden h-0.5 w-[calc(100%-100px)] bg-gradient-to-r from-primary/50 to-primary/10 md:block" />
                 )}
 

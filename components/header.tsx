@@ -9,10 +9,24 @@ import { motion } from "framer-motion"
 import { siteConfig } from "@/config/site"
 import { getWhatsAppLink } from "@/lib/whatsapp"
 import { fadeInUp, transitions } from "@/lib/animations"
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [config, setConfig] = useState(siteConfig)
+
+  useEffect(() => {
+    async function loadConfig() {
+      try {
+        const fetchedConfig = await dataFetcher.getSiteConfig()
+        setConfig(fetchedConfig)
+      } catch (error) {
+        console.error("Failed to load site config:", error)
+      }
+    }
+    loadConfig()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -38,7 +52,7 @@ export function Header() {
           >
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </motion.div>
-          <span className="text-xl font-bold text-foreground">{siteConfig.businessName}</span>
+          <span className="text-xl font-bold text-foreground">{config.businessName}</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -97,13 +111,13 @@ export function Header() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30">
                     <Sparkles className="h-5 w-5 text-primary-foreground" />
                   </div>
-                  <span className="text-lg font-bold text-foreground">{siteConfig.businessName}</span>
+                  <span className="text-lg font-bold text-foreground">{config.businessName}</span>
                 </div>
               </div>
 
               {/* Navigation Links */}
               <nav className="flex-1 px-6 py-6 flex flex-col gap-1 overflow-y-auto">
-                {siteConfig.navLinks.map((link, index) => (
+                {config.navLinks.map((link, index) => (
                   <motion.div
                     key={link.href}
                     initial={{ opacity: 0, x: 20 }}

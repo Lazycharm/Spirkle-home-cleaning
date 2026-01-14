@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Sparkles, MessageCircle, MapPin, Clock } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -7,8 +8,27 @@ import { siteConfig } from "@/config/site"
 import { contactConfig } from "@/config/contact"
 import { getWhatsAppLink, getWhatsAppDisplayNumber } from "@/lib/whatsapp"
 import { fadeInUp } from "@/lib/animations"
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function Footer() {
+  const [site, setSite] = useState(siteConfig)
+  const [contact, setContact] = useState(contactConfig)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [fetchedSite, fetchedContact] = await Promise.all([
+          dataFetcher.getSiteConfig(),
+          dataFetcher.getContact(),
+        ])
+        setSite(fetchedSite)
+        setContact(fetchedContact)
+      } catch (error) {
+        console.error("Failed to load site/contact config:", error)
+      }
+    }
+    loadData()
+  }, [])
   return (
     <footer className="relative border-t border-border/40 bg-card px-4 py-12">
       <div className="container mx-auto">
@@ -24,10 +44,10 @@ export function Footer() {
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30">
                 <Sparkles className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground">{siteConfig.businessName}</span>
+              <span className="text-xl font-bold text-foreground">{site.businessName}</span>
             </Link>
             <p className="text-muted-foreground max-w-sm">
-              {siteConfig.tagline} in {siteConfig.location.area}, {siteConfig.location.city}. We bring sparkle to every
+              {site.tagline} in {site.location.area}, {site.location.city}. We bring sparkle to every
               home.
             </p>
           </motion.div>
@@ -50,11 +70,11 @@ export function Footer() {
               </a>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                {siteConfig.location.fullAddress}
+                {site.location.fullAddress}
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
-                {contactConfig.hours.display}
+                {contact.hours.display}
               </div>
             </div>
           </motion.div>
@@ -83,7 +103,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border/40 text-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} {siteConfig.businessName} {siteConfig.location.city}. All rights reserved.
+            © {new Date().getFullYear()} {site.businessName} {site.location.city}. All rights reserved.
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, Quote, UserCheck, ShieldCheck, Heart } from "lucide-react"
 import { motion } from "framer-motion"
@@ -8,13 +9,32 @@ import { trustPointsConfig } from "@/config/trust"
 import { testimonialsConfig } from "@/config/testimonials"
 import { imagesConfig, getImagePath } from "@/config/images"
 import { fadeInUp } from "@/lib/animations"
-
-// Show only top 3 trust points
-const topTrustPoints = trustPointsConfig.slice(0, 3)
-// Show only 2 testimonials
-const topTestimonials = testimonialsConfig.slice(0, 2)
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function TrustTestimonialsSection() {
+  const [trustPoints, setTrustPoints] = useState(trustPointsConfig)
+  const [testimonials, setTestimonials] = useState(testimonialsConfig)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [fetchedTrust, fetchedTestimonials] = await Promise.all([
+          dataFetcher.getTrust(),
+          dataFetcher.getTestimonials(),
+        ])
+        setTrustPoints(fetchedTrust)
+        setTestimonials(fetchedTestimonials)
+      } catch (error) {
+        console.error("Failed to load trust/testimonials:", error)
+      }
+    }
+    loadData()
+  }, [])
+
+  // Show only top 3 trust points
+  const topTrustPoints = trustPoints.slice(0, 3)
+  // Show only 2 testimonials
+  const topTestimonials = testimonials.slice(0, 2)
   return (
     <section className="relative px-4 py-16 md:py-20 bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto">

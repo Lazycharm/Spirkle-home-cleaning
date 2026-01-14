@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MessageCircle, ChevronRight, Play } from "lucide-react"
@@ -9,9 +10,27 @@ import { siteConfig } from "@/config/site"
 import { imagesConfig, getImagePath } from "@/config/images"
 import { getWhatsAppLink } from "@/lib/whatsapp"
 import { fadeInUp, slideInRight, scaleIn, transitions } from "@/lib/animations"
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function HeroSection() {
-  const hero = siteConfig.hero
+  const [config, setConfig] = useState(siteConfig)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadConfig() {
+      try {
+        const fetchedConfig = await dataFetcher.getSiteConfig()
+        setConfig(fetchedConfig)
+      } catch (error) {
+        console.error("Failed to load site config:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadConfig()
+  }, [])
+
+  const hero = config.hero
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">

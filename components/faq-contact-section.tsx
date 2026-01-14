@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,11 +10,30 @@ import { faqsConfig } from "@/config/faq"
 import { contactConfig } from "@/config/contact"
 import { getWhatsAppLink, getWhatsAppDisplayNumber } from "@/lib/whatsapp"
 import { fadeInUp } from "@/lib/animations"
-
-// Show only top 4 FAQs
-const topFaqs = faqsConfig.slice(0, 4)
+import { dataFetcher } from "@/lib/data-fetcher"
 
 export function FaqContactSection() {
+  const [faqs, setFaqs] = useState(faqsConfig)
+  const [contact, setContact] = useState(contactConfig)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [fetchedFaqs, fetchedContact] = await Promise.all([
+          dataFetcher.getFaqs(),
+          dataFetcher.getContact(),
+        ])
+        setFaqs(fetchedFaqs)
+        setContact(fetchedContact)
+      } catch (error) {
+        console.error("Failed to load FAQs/contact:", error)
+      }
+    }
+    loadData()
+  }, [])
+
+  // Show only top 4 FAQs
+  const topFaqs = faqs.slice(0, 4)
   return (
     <section id="faq" className="relative px-4 py-16 md:py-20">
       <div className="container mx-auto max-w-4xl">
@@ -67,7 +87,7 @@ export function FaqContactSection() {
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="mb-1 font-semibold text-foreground">Service Area</h3>
-                <p className="text-sm text-muted-foreground">{contactConfig.serviceArea.primary}</p>
+                <p className="text-sm text-muted-foreground">{contact.serviceArea.primary}</p>
               </CardContent>
             </Card>
 
@@ -77,7 +97,7 @@ export function FaqContactSection() {
                   <Clock className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="mb-1 font-semibold text-foreground">Hours</h3>
-                <p className="text-sm text-muted-foreground">{contactConfig.hours.weekdays}</p>
+                <p className="text-sm text-muted-foreground">{contact.hours.weekdays}</p>
               </CardContent>
             </Card>
           </div>
