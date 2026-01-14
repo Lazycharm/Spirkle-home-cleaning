@@ -32,7 +32,7 @@ export function SocialProofStrip() {
     <section className="relative bg-primary/5 border-y border-primary/10">
       <div className="container mx-auto px-4 py-4">
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
-          {config.socialProof.map((item, index) => {
+          {(config.socialProof ?? siteConfig.socialProof).map((item, index) => {
             const Icon = iconMap[item.label] || Users
             return (
               <motion.div

@@ -14,6 +14,36 @@ import { testimonialsConfig } from "@/config/testimonials"
 import { stepsConfig } from "@/config/how-it-works"
 import { trustPointsConfig } from "@/config/trust"
 
+function mergeWithDefaults<T>(defaults: T, override: any): T {
+  if (override === null || override === undefined) return defaults
+
+  // Arrays: if override is an array, use it (even if empty) only when explicitly provided.
+  // In practice we want to avoid crashing on undefined arrays, so we treat non-arrays as "missing".
+  if (Array.isArray(defaults)) {
+    return (Array.isArray(override) ? override : defaults) as T
+  }
+
+  // Objects: recursively merge keys from defaults
+  if (typeof defaults === "object" && defaults !== null) {
+    const out: any = Array.isArray(defaults) ? [] : { ...(defaults as any) }
+    const overrideObj = typeof override === "object" && override !== null ? override : {}
+
+    for (const key of Object.keys(defaults as any)) {
+      out[key] = mergeWithDefaults((defaults as any)[key], overrideObj[key])
+    }
+
+    // Keep any extra keys from override (non-breaking)
+    for (const key of Object.keys(overrideObj)) {
+      if (!(key in out)) out[key] = overrideObj[key]
+    }
+
+    return out as T
+  }
+
+  // Primitives: override if defined
+  return (override === undefined ? defaults : override) as T
+}
+
 // Icon mapping for dynamic imports
 const iconMap: Record<string, any> = {}
 
@@ -136,7 +166,7 @@ async function transformTrustPoint(dbRecord: any) {
 export const dataFetcher = {
   async getSiteConfig() {
     const data = await fetchFromAPI("config?key=site", null)
-    return data || siteConfig
+    return mergeWithDefaults(siteConfig, data)
   },
 
   async getServices() {
@@ -163,7 +193,7 @@ export const dataFetcher = {
 
   async getContact() {
     const data = await fetchFromAPI("contact", null)
-    return data || contactConfig
+    return mergeWithDefaults(contactConfig, data)
   },
 
   async getFaqs() {

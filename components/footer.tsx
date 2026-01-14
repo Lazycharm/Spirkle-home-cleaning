@@ -88,7 +88,7 @@ export function Footer() {
           >
             <h4 className="mb-4 font-semibold text-foreground">Quick Links</h4>
             <div className="space-y-3">
-              {siteConfig.navLinks.map((link) => (
+              {(site.navLinks ?? siteConfig.navLinks).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

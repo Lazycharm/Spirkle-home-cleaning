@@ -57,7 +57,7 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-8 lg:flex">
-          {siteConfig.navLinks.map((link, index) => (
+          {(config.navLinks ?? siteConfig.navLinks).map((link, index) => (
             <motion.div
               key={link.href}
               initial={fadeInUp.hidden}
@@ -117,7 +117,7 @@ export function Header() {
 
               {/* Navigation Links */}
               <nav className="flex-1 px-6 py-6 flex flex-col gap-1 overflow-y-auto">
-                {config.navLinks.map((link, index) => (
+                {(config.navLinks ?? siteConfig.navLinks).map((link, index) => (
                   <motion.div
                     key={link.href}
                     initial={{ opacity: 0, x: 20 }}

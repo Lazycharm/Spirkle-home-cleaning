@@ -30,7 +30,7 @@ export function HeroSection() {
     loadConfig()
   }, [])
 
-  const hero = config.hero
+  const hero = config.hero ?? siteConfig.hero
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -123,7 +123,7 @@ export function HeroSection() {
             transition={{ ...transitions.default, delay: 0.5 }}
             className="mt-12 flex flex-wrap gap-8"
           >
-            {hero.stats.map((stat) => (
+            {(hero.stats ?? []).map((stat) => (
               <div key={stat.label} className="text-center sm:text-left">
                 <p className="text-2xl font-bold text-primary sm:text-3xl">{stat.value}</p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
